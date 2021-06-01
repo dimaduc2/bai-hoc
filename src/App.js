@@ -39,6 +39,13 @@ class App extends Component {
     diemTrungBinh:'',
     timDiemCao:'',
     timDiemThap:'',
+
+
+
+    so1:'', 
+    so2:'', 
+    ketQuaPhepTinh:'',
+
   }
   
   
@@ -160,12 +167,99 @@ class App extends Component {
   }
 
 
+
+
+  onChangeTimSo1 = (e, { value }) => {
+    this.setState({so1: value})
+  }
+  onChangeTimSo2 = (e, { value }) => {
+    this.setState({so2: value})
+  }
+  tinhTong = () => {
+    axios.get('http://localhost:5500/baiHoc/cong?so1='+this.state.so1+'&so2='+this.state.so2)
+    .then(res => {
+      // alert(res.data.ketQua)
+      this.setState({ketQuaPhepTinh: res.data.ketQua});
+      this.setState({so1:''});
+      this.setState({so2:''});
+    })
+    .catch(err => {
+      // alert(err)
+      console.log(err)
+    })
+  }
+  tinhHieu = () => {
+    axios.get('http://localhost:5500/baiHoc/tru?so1='+this.state.so1+'&so2='+this.state.so2)
+    .then(res => {
+      // alert(res.data.ketQua)
+      this.setState({ketQuaPhepTinh: res.data.ketQua});
+      this.setState({so1:''});
+      this.setState({so2:''});
+    })
+    .catch(err => {
+      // alert(err)
+      console.log(err)
+    })
+  }
+  tinhtich = () => {
+    axios.get('http://localhost:5500/baiHoc/nhan?so1='+this.state.so1+'&so2='+this.state.so2)
+    .then(res => {
+      // alert(res.data.ketQua)
+      this.setState({ketQuaPhepTinh: res.data.ketQua});
+      this.setState({so1:''});
+      this.setState({so2:''});
+    })
+    .catch(err => {
+      // alert(err)
+      console.log(err)
+    })
+  }
+  tinhThuong = () => {
+    axios.get('http://localhost:5500/baiHoc/chia?so1='+this.state.so1+'&so2='+this.state.so2)
+    .then(res => {
+      // alert(res.data.ketQua)
+      this.setState({ketQuaPhepTinh: res.data.ketQua});
+      this.setState({so1:''});
+      this.setState({so2:''});
+    })
+    .catch(err => {
+      // alert(err)
+      console.log(err)
+    })
+  }
+
+
+
   render() {
-    const { themChuMoi, timRaSoArray, tatCaBaiHoc, ketQuaBaoNhieuBai, lichNgay,
-      ketQuaDaTimBaiTap, kqNgay, TFAdd, diemTrungBinh, timDiemCao, timDiemThap } = this.state
+    const { themChuMoi, timRaSoArray, ketQuaBaoNhieuBai, lichNgay, ketQuaPhepTinh,
+      ketQuaDaTimBaiTap, kqNgay, diemTrungBinh, timDiemCao, timDiemThap } = this.state
 
     return (
       <div className="App">
+
+        so 1 
+        <Form>
+          <Form.Input inline
+          value={this.state.so1}
+          onChange={this.onChangeTimSo1}
+          />
+        </Form>
+        so 2 
+        <Form>
+          <Form.Input inline
+          value={this.state.so2}
+          onChange={this.onChangeTimSo2}
+          />
+        </Form>
+        <br/>
+        <Button onClick={this.tinhTong}>+</Button>
+        <Button onClick={this.tinhHieu}>-</Button>
+        <Button onClick={this.tinhtich}>*</Button>
+        <Button onClick={this.tinhThuong}>/</Button>
+        <br/><br/>
+        {ketQuaPhepTinh}
+
+
 
         <br/><br/><br/><br/>
         <Form>
