@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {Button, Dropdown, Form, Table, Popup, Label, Radio, Rating} from 'semantic-ui-react'
+import {Button, Dropdown, Form, Table, Popup, Label, Radio, Rating, Image} from 'semantic-ui-react'
 import React, { Component } from 'react'
 import axios from 'axios';
 
@@ -12,6 +12,12 @@ const options = [
   { key: 5, text: 'Thứ sáu', value: 'Thứ sáu' },
   { key: 6, text: 'Thứ bảy', value: 'Thứ bảy' },
   { key: 7, text: 'Chủ nhật', value: 'Chủ nhật' },
+]
+
+const DSstarWars = [
+  {name: "Anakin", gender: "Male", species: "Human", lightsaber: "Lightsater Violet", anh: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/84d44311-4aa5-472d-b391-42b113229ca0/dawkfge-ac556751-5b05-48bb-9ccb-0e37a5d798bb.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzg0ZDQ0MzExLTRhYTUtNDcyZC1iMzkxLTQyYjExMzIyOWNhMFwvZGF3a2ZnZS1hYzU1Njc1MS01YjA1LTQ4YmItOWNjYi0wZTM3YTVkNzk4YmIuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Ph_pKPLrwOITNwiV7GqVlBa77Z1irVe7mjR9CjdQzqY"}, 
+  {name: "Padme", gender: "Felame", species: "Human", lightsaber: "Lightsater Violet & Green", anh: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/e5fe94b7-e8a3-40cd-8392-4f479050f28b/de1kpq6-15eddea0-ad68-499a-bd37-13a34795bdc2.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2U1ZmU5NGI3LWU4YTMtNDBjZC04MzkyLTRmNDc5MDUwZjI4YlwvZGUxa3BxNi0xNWVkZGVhMC1hZDY4LTQ5OWEtYmQzNy0xM2EzNDc5NWJkYzIuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UWcvBRkDsjBkcGstONc9yYCXJjWqJJQcPH6rIwRWMAc"}, 
+  {name: "Talon", gender: "Felame", species: "Twi'lek", lightsaber: "Lightsater Red", anh: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6ddf58d4-2019-40b6-a766-8573e5e77c9e/d1s3jfz-4050a79f-a9b1-4fd0-99ed-d16d5d720178.jpg/v1/fill/w_600,h_596,q_75,strp/talon_unleashed_by_rocketraygun_d1s3jfz-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTk2IiwicGF0aCI6IlwvZlwvNmRkZjU4ZDQtMjAxOS00MGI2LWE3NjYtODU3M2U1ZTc3YzllXC9kMXMzamZ6LTQwNTBhNzlmLWE5YjEtNGZkMC05OWVkLWQxNmQ1ZDcyMDE3OC5qcGciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.5PNKTm78rRIc-PBKAoCOkFDZCk7UH_weKC8slXft_Rk"}
 ]
 
 class App extends Component {
@@ -40,13 +46,25 @@ class App extends Component {
     timDiemCao:'',
     timDiemThap:'',
 
-
-
     so1:'', 
     so2:'', 
     ketQuaPhepTinh:'',
-
+    danhSachStarWars:[], // không liên quan mongoDB
   }
+
+  // componentDidMount(){
+  //   axios.get('http://localhost:5400/pokeball?nameBall=all')
+
+  //   .then(res => {
+  //     if(res.data==='Không kết nối với MongoDB'){
+  //       this.setState({coLoi: res.data});
+  //     }
+  //     else{
+  //       this.setState({danhSachStarWars: res.data});
+  //     }
+  //   })
+  // }
+
   
   
   xemLichHoc = (e, { value }) => {
@@ -84,7 +102,7 @@ class App extends Component {
     this.setState({timNgay: value})
   } 
   timBaiTapVaoThuMay = (e, { value }) => {
-    axios.get('http://localhost:5500/baiHoc/baiTap/timBaiTap?ngay='+this.state.timNgay)
+    axios.get('http://localhost:5500/baiHoc/baiTap?ngay='+this.state.timNgay)
     .then(res => {
       this.setState({ketQuaDaTimBaiTap: res.data.ketQuaDaTimBaiTap});
       this.setState({kqNgay: res.data.kqNgay});
@@ -138,7 +156,7 @@ class App extends Component {
     if(isNaN(this.state.diemAdd)){
       alert('Điểm không phải là số mà là chữ, viết lại đi')
     }else{
-      axios.post('http://localhost:5500/baiHoc/baiTap/themChuMoi', baiTapMoi)
+      axios.post('http://localhost:5500/baiHoc/baiTap', baiTapMoi)
       .then(res => {
         this.setState({themChuMoi: res.data.ketQuaChuMoi});
         this.setState({ngayAdd:''});
@@ -227,11 +245,38 @@ class App extends Component {
       console.log(err)
     })
   }
+  
+  xemLichHoc = (e, { value }) => {
+    axios.get('http://localhost:5500/baiHoc/tatCaBaiTap')
+    .then(res => {
+      this.setState({lichNgay: res.data.tatCaSoArray});
+    })
+  }
+  
+  timDanhSachStarWars2 = (e, { value }) => {
+    axios.get('http://localhost:5500/baiHoc/starWars2?nameStarWars=all')
+  }
+  
+  timDanhSachStarWars = (e, { value }) => {
+    this.setState({
+      danhSachStarWars:DSstarWars
+    });
+    
+    for(var i=0; i<DSstarWars.length; i++)
+    {
+      axios.get('http://localhost:5500/baiHoc/starWars?name='+DSstarWars[i].name+'&gender='+DSstarWars[i].gender+'&species='+DSstarWars[i].species+'&lightsaber='+DSstarWars[i].lightsaber)
+    }
+  }
 
+  giauDanhSachStarWars = (e, { value }) => {
+    this.setState({
+      danhSachStarWars:[]
+    });
+  }
 
 
   render() {
-    const { themChuMoi, timRaSoArray, ketQuaBaoNhieuBai, lichNgay, ketQuaPhepTinh,
+    const { themChuMoi, timRaSoArray, ketQuaBaoNhieuBai, lichNgay, ketQuaPhepTinh, danhSachStarWars,
       ketQuaDaTimBaiTap, kqNgay, diemTrungBinh, timDiemCao, timDiemThap } = this.state
 
     return (
@@ -481,6 +526,21 @@ class App extends Component {
           </div>
         }
 
+        <br/><br/><br/><br/>
+
+        <Button onClick={this.timDanhSachStarWars2}>ABCDEF</Button>
+        <br/>
+        <Button onClick={this.timDanhSachStarWars}>tìm danh sach Star Wars</Button>
+        <Button onClick={this.giauDanhSachStarWars}>giấu danh sach Star Wars</Button>
+        
+        <br/><br/>
+        {danhSachStarWars.map((moiNguoi, index)=>
+          <div>
+          {index+1} | Name: {moiNguoi.name} | Gender: {moiNguoi.gender} | Species: {moiNguoi.species} 
+                    | Color Lightsaber: {moiNguoi.lightsaber}  | <Image src={moiNguoi.anh} />
+          </div>
+        )}
+
         <br/><br/>
 
         <header className="App-header">
@@ -497,6 +557,8 @@ class App extends Component {
             Learn React
           </a>
         </header>
+
+
       </div>
     );
   }
