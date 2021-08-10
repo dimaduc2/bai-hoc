@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {Button, Dropdown, Form, Table, Popup, Label, Radio, Rating, Image} from 'semantic-ui-react'
+import {Button, Dropdown, Form, Table, Popup, Label, Radio, Rating, Image, Grid} from 'semantic-ui-react'
 import React, { Component } from 'react'
 import axios from 'axios';
 
@@ -49,21 +49,26 @@ class App extends Component {
     so1:'', 
     so2:'', 
     ketQuaPhepTinh:'',
-    danhSachStarWars:[], // không liên quan mongoDB
+    danhSachStarWars:[],
+    danhSachStarWars2:[],
+    danhSachStarWars3:'', // không liên quan mongoDB
+
+    kichThuoc: 'tiny',
+    
   }
 
-  // componentDidMount(){
-  //   axios.get('http://localhost:5400/pokeball?nameBall=all')
+  componentDidMount(){
+    axios.get('http://localhost:5500/baiHoc/starWars2?nameStarWars=all')
 
-  //   .then(res => {
-  //     if(res.data==='Không kết nối với MongoDB'){
-  //       this.setState({coLoi: res.data});
-  //     }
-  //     else{
-  //       this.setState({danhSachStarWars: res.data});
-  //     }
-  //   })
-  // }
+    .then(res => {
+      if(res.data==='Không kết nối với MongoDB'){
+        this.setState({coLoi: res.data});
+      }
+      else{
+        this.setState({danhSachStarWars2: res.data});
+      }
+    })
+  }
 
   
   
@@ -253,11 +258,7 @@ class App extends Component {
     })
   }
   
-  timDanhSachStarWars2 = (e, { value }) => {
-    axios.get('http://localhost:5500/baiHoc/starWars2?nameStarWars=all')
-  }
-  
-  timDanhSachStarWars = (e, { value }) => {
+  timDanhSachStarWars1 = (e, { value }) => {
     this.setState({
       danhSachStarWars:DSstarWars
     });
@@ -267,16 +268,62 @@ class App extends Component {
       axios.get('http://localhost:5500/baiHoc/starWars?name='+DSstarWars[i].name+'&gender='+DSstarWars[i].gender+'&species='+DSstarWars[i].species+'&lightsaber='+DSstarWars[i].lightsaber)
     }
   }
-
-  giauDanhSachStarWars = (e, { value }) => {
+  giauDanhSachStarWars1 = (e, { value }) => {
     this.setState({
       danhSachStarWars:[]
     });
   }
 
+  timDanhSachStarWars2 = (e, { value }) => {
+    axios.get('http://localhost:5500/baiHoc/starWars3?nameStarWars=all')
+    
+    .then(res => {
+      if(res.data==='Không kết nối với MongoDB'){
+        this.setState({coLoi: res.data});
+      }
+      else{
+        this.setState({danhSachStarWars3: res.data});
+      }
+    })
+  }
+  giauDanhSachStarWars2 = (e, { value }) => {
+    this.setState({danhSachStarWars3:''});
+  }
+
+
+  xoaDanhSachStarWars = (id, index) => {
+    var r = window.confirm("Có xóa không?");
+    if(r === true){
+      axios.delete('http://localhost:5500/baiHoc/starWars/'+id)
+      .then(res => {
+        alert(res.data)
+      })
+    }
+  }
+  themDanhSachStarWars = (e, { value }) => {
+    var starWarsMoi = {
+                      name: this.state.Name,
+                    }
+    axios.post('http://localhost:5500/baiHoc/starWars', starWarsMoi)
+    .then(res => {
+      alert(res.data)
+    })
+  }
+  suaDanhSachStarWars = (id, index) => {
+    var starWarsSua = {
+                      name: this.state.Name,
+                    }
+    axios.put('http://localhost:5500/baiHoc/starWars/'+this.state.Id, starWarsSua)
+    .then(res => {
+      alert(res.data)
+    })
+  }
+
+
+
 
   render() {
-    const { themChuMoi, timRaSoArray, ketQuaBaoNhieuBai, lichNgay, ketQuaPhepTinh, danhSachStarWars,
+    const { themChuMoi, timRaSoArray, ketQuaBaoNhieuBai, lichNgay, ketQuaPhepTinh, danhSachStarWars, danhSachStarWars2, kichThuoc, danhSachStarWars3,
       ketQuaDaTimBaiTap, kqNgay, diemTrungBinh, timDiemCao, timDiemThap } = this.state
 
     return (
@@ -527,12 +574,18 @@ class App extends Component {
         }
 
         <br/><br/><br/><br/>
-
-        <Button onClick={this.timDanhSachStarWars2}>ABCDEF</Button>
-        <br/>
-        <Button onClick={this.timDanhSachStarWars}>tìm danh sach Star Wars</Button>
-        <Button onClick={this.giauDanhSachStarWars}>giấu danh sach Star Wars</Button>
         
+        {/* <Button onClick={this.timDanhSachStarWars2}>ABCDEF</Button> */}
+        <br/>
+        <Button onClick={this.xoaDanhSachStarWars}>xóa danh sach Star Wars</Button>
+        <Button onClick={this.themDanhSachStarWars}>thêm danh sach Star Wars</Button>
+        <Button onClick={this.suaDanhSachStarWars}>sửa danh sach Star Wars</Button>
+        <br/>
+        <Button onClick={this.timDanhSachStarWars1}>tìm danh sach Star Wars 1</Button>
+        <Button onClick={this.giauDanhSachStarWars1}>giấu danh sach Star Wars 1</Button>
+        <br/>
+        <Button onClick={this.timDanhSachStarWars2}>tìm danh sach Star Wars 2 không mongoDB</Button>
+        <Button onClick={this.giauDanhSachStarWars2}>giấu danh sach Star Wars 2 không mongoDB</Button>
         <br/><br/>
         {danhSachStarWars.map((moiNguoi, index)=>
           <div>
@@ -540,8 +593,54 @@ class App extends Component {
                     | Color Lightsaber: {moiNguoi.lightsaber}  | <Image src={moiNguoi.anh} />
           </div>
         )}
+        <br/><br/>
+        
+        {danhSachStarWars2.length}
+
+
+{danhSachStarWars2
+  ?
+  <Grid doubling columns='5'>
+      {danhSachStarWars2.map((moiStarWars, index)=>
+        <Grid.Column>
+          <Popup on='click' trigger={
+            <div>
+              {/* <Image src={this.props.anhPokemon[moiStarWars.image]} size={kichThuoc} ></Image> */}
+              <Image src={moiStarWars.name} size={kichThuoc} ></Image>
+              <br/>
+              <b>{moiStarWars.name}</b>
+            </div>
+          } wide='very' >
+            <Grid>
+              <Grid.Column textAlign='center' width={8}>
+                {/* <Image src={this.props.anhPokemon[moiStarWars.image]} size='big' ></Image> */}
+                <Image src={moiStarWars.name} size='big' ></Image>
+              </Grid.Column>
+              <Grid.Column textAlign='center' width={8}>
+                <b>Name: {moiStarWars.name}</b>
+                <br/>
+                <b>Lightsaber: {moiStarWars.lightsaber}</b>
+                <br/>
+                <b>Gender: {moiStarWars.gender}</b>
+                <br/>
+                <b>Species: {moiStarWars.species}</b>
+              </Grid.Column>
+            </Grid>
+          </Popup>
+        </Grid.Column>
+      )}
+    </Grid>
+  :null
+}
+
 
         <br/><br/>
+
+        {danhSachStarWars3}
+
+
+        <br/><br/>
+
 
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
