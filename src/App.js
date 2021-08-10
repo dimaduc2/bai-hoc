@@ -605,16 +605,14 @@ class App extends Component {
         <Grid.Column>
           <Popup on='click' trigger={
             <div>
-              {/* <Image src={this.props.anhPokemon[moiStarWars.image]} size={kichThuoc} ></Image> */}
-              <Image src={moiStarWars.name} size={kichThuoc} ></Image>
+              <Image src={moiStarWars.anh} size={kichThuoc} ></Image>
               <br/>
               <b>{moiStarWars.name}</b>
             </div>
           } wide='very' >
             <Grid>
               <Grid.Column textAlign='center' width={8}>
-                {/* <Image src={this.props.anhPokemon[moiStarWars.image]} size='big' ></Image> */}
-                <Image src={moiStarWars.name} size='big' ></Image>
+                <Image src={moiStarWars.anh} size='big' ></Image>
               </Grid.Column>
               <Grid.Column textAlign='center' width={8}>
                 <b>Name: {moiStarWars.name}</b>
