@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {Button, Dropdown, Form, Table, Popup, Label, Radio, Rating, Image, Grid} from 'semantic-ui-react'
+import {Button, Dropdown, Form, Table, Popup, Label, Radio, Rating, Image, Grid, Card} from 'semantic-ui-react'
 import React, { Component } from 'react'
 import axios from 'axios';
 
@@ -593,43 +593,70 @@ class App extends Component {
                     | Color Lightsaber: {moiNguoi.lightsaber}  | <Image src={moiNguoi.anh} />
           </div>
         )}
-        <br/><br/>
+        {/* <br/><br/> */}
         
         {danhSachStarWars2.length}
 
 
-{danhSachStarWars2
-  ?
-  <Grid doubling columns='5'>
-      {danhSachStarWars2.map((moiStarWars, index)=>
-        <Grid.Column>
-          <Popup on='click' trigger={
-            <div>
-              <Image src={moiStarWars.anh} size={kichThuoc} ></Image>
-              <br/>
-              <b>{moiStarWars.name}</b>
-            </div>
-          } wide='very' >
-            <Grid>
-              <Grid.Column textAlign='center' width={8}>
-                <Image src={moiStarWars.anh} size='big' ></Image>
-              </Grid.Column>
-              <Grid.Column textAlign='center' width={8}>
-                <b>Name: {moiStarWars.name}</b>
-                <br/>
-                <b>Lightsaber: {moiStarWars.lightsaber}</b>
-                <br/>
-                <b>Gender: {moiStarWars.gender}</b>
-                <br/>
-                <b>Species: {moiStarWars.species}</b>
-              </Grid.Column>
-            </Grid>
-          </Popup>
-        </Grid.Column>
-      )}
-    </Grid>
-  :null
-}
+        {danhSachStarWars2
+          ?
+
+          <Card.Group itemsPerRow={5}>
+            {danhSachStarWars2.map((moiStarWars, index)=>
+              <Card>
+                <Popup on='click' trigger={
+                  <div>
+                    <Image src={moiStarWars.anh} size='small'></Image>
+                    <br/>
+                    <b>{moiStarWars.name}</b>
+                  </div>
+                } wide='very'>
+                  <Card>
+                    <Image src={moiStarWars.anh} size='big'></Image>
+                    <b>Name: {moiStarWars.name}</b>
+                    <br/>
+                    <b>Lightsaber: {moiStarWars.lightsaber}</b>
+                    <br/>
+                    <b>Gender: {moiStarWars.gender}</b>
+                    <br/>
+                    <b>Species: {moiStarWars.species}</b>
+                  </Card>
+                </Popup>
+              </Card>
+            )}
+          </Card.Group>
+
+            // <Grid doubling columns='5'>
+            //   {danhSachStarWars2.map((moiStarWars, index)=>
+            //     <Grid.Column>
+            //       <Popup on='click' trigger={
+            //         <div>
+            //           <Image src={moiStarWars.anh} size={kichThuoc} ></Image>
+            //           <br/>
+            //           <b>{moiStarWars.name}</b>
+            //         </div>
+            //       } wide='very' >
+            //         <Grid>
+            //           <Grid.Column textAlign='center' width={8}>
+            //             <Image src={moiStarWars.anh} size='big' ></Image>
+            //           </Grid.Column>
+            //           <Grid.Column textAlign='center' width={8}>
+            //             <b>Name: {moiStarWars.name}</b>
+            //             <br/>
+            //             <b>Lightsaber: {moiStarWars.lightsaber}</b>
+            //             <br/>
+            //             <b>Gender: {moiStarWars.gender}</b>
+            //             <br/>
+            //             <b>Species: {moiStarWars.species}</b>
+            //           </Grid.Column>
+            //         </Grid>
+            //       </Popup>
+            //     </Grid.Column>
+            //   )}
+            // </Grid>
+
+          :null
+        }
 
 
         <br/><br/>
